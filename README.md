@@ -1,4 +1,5 @@
 # DDoc
+[查看Demo](https://distchen.github.io/DDoc/)
 > DDoc 用 JS 生成一份 word 文档，在文档中可以添加一些常规的元素：段落、标题、列表、表格等。
 
 ## 使用方式
