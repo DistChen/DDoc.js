@@ -3,6 +3,7 @@ function DDoc() {
     this.listCount = 0;
 }
 
+
 DDoc.prototype._generateDocument = function () {
     var output = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 wp14"><w:body>';
 
@@ -15,18 +16,55 @@ DDoc.prototype._generateDocument = function () {
     return output;
 };
 
+
+/**
+ * 根据请求参数得到样式元素
+ * @param paras
+ * example：
+ *      {
+ *          font:"Microsoft YaHei UI",
+ *          fontSize:"44",
+ *          bold:true,
+ *          color:"FF0000",
+ *          highlightColor:"blue"
+ *      }
+ * @private
+ */
+DDoc.prototype._getStyle=function(paras){
+    var style ='<w:rPr>';
+    if(paras.font){
+        style +='<w:rFonts w:ascii="'+paras.font+'" w:eastAsia="'+paras.font+'" w:hAnsi="'+paras.font+'"/>';
+    }
+    if(paras.bold){
+        style +='<w:b/>';
+    }
+    if(paras.fontSize){
+        style +='<w:sz w:val="'+paras.fontSize+'"/><w:szCs w:val="'+paras.fontSize+'"/>';
+    }
+    if(paras.color){
+        style += '<w:color w:val="'+paras.color+'"/>';
+    }
+    if(paras.highlightColor){
+        style += '<w:highlight w:val="'+paras.highlightColor+'"/>';
+    }
+    style +='</w:rPr>';
+    return style;
+};
+
 /**
  * 添加段落
- * @param text
+ * @param text 被添加的文本
+ * @param styles 样式
  */
-DDoc.prototype.addParagraph = function (text) {
+DDoc.prototype.addParagraph = function (text,styles) {
     var p ='<w:p>' +
-                '<w:r>' +
+                '<w:r>' + this._getStyle(styles||{})+
                     '<w:t>'+text+'</w:t>' +
                 '</w:r>' +
             '</w:p>';
     this.data.push(p);
 };
+
 
 /**
  * 添加新行
@@ -39,15 +77,16 @@ DDoc.prototype.newLine=function(){
  * 添加标题
  * @param text
  * @param type DDoc.prototype.HeaderType
+ * @param styles 样式
  */
-DDoc.prototype.addHeader=function(text,type){
+DDoc.prototype.addHeader=function(text,type,styles){
     var h='<w:p>' +
             '<w:pPr>' +
-                    '<w:pStyle w:val="'+type+'"/>' +
-                '</w:pPr>' +
-                '<w:r>' +
-                    '<w:t>'+text+'</w:t>' +
-                '</w:r>' +
+                '<w:pStyle w:val="'+type+'"/>' +
+            '</w:pPr>' +
+            '<w:r>' + this._getStyle(styles||{})+
+                '<w:t>'+text+'</w:t>' +
+            '</w:r>' +
           '</w:p>';
     this.data.push(h);
 };
@@ -56,8 +95,9 @@ DDoc.prototype.addHeader=function(text,type){
  *  添加一个空表格
  * @param row
  * @param col
+ * @param styles 样式
  */
-DDoc.prototype.addEmptyTable=function(row,col){
+DDoc.prototype.addEmptyTable=function(row,col,styles){
     var rowArr=[];
     for(var i=0;i<row;i++){
         var colArr=[];
@@ -66,14 +106,16 @@ DDoc.prototype.addEmptyTable=function(row,col){
         }
         rowArr.push(colArr);
     }
-    this.addTable(rowArr);
+    this.addTable(rowArr,styles);
 };
 
 /**
  * 添加表格
  * @param arrs
+ * @param styles 样式
  */
-DDoc.prototype.addTable=function(arrs){
+DDoc.prototype.addTable=function(arrs,styles){
+    var _style = this._getStyle(styles||{});
     var row = arrs.length;
     var col = arrs[0].length;
     var width = parseInt(8296/col);
@@ -97,7 +139,7 @@ DDoc.prototype.addTable=function(arrs){
                             '<w:tcW w:w="'+width+'"/>' +
                         '</w:tcPr>' +
                         '<w:p>' +
-                            '<w:r>' +
+                            '<w:r>' + _style +
                                 '<w:t>'+arrs[i][j]+'</w:t>' +
                             '</w:r>' +
                         '</w:p>' +
@@ -111,8 +153,11 @@ DDoc.prototype.addTable=function(arrs){
 
 /**
  * 添加列表
+ * @param items
+ * @param styles 样式
  */
-DDoc.prototype.addList=function(items){
+DDoc.prototype.addList=function(items,styles){
+    var _style = this._getStyle(styles||{});
     this.listCount++;
     var list='';
     for(var i in items){
@@ -125,7 +170,7 @@ DDoc.prototype.addList=function(items){
                         '</w:numPr> ' +
                         '<w:ind w:firstLineChars="0"/> ' +
                     '</w:pPr> ' +
-                    '<w:r>' +
+                    '<w:r>' + _style+
                         '<w:t>'+items[i]+'</w:t> ' +
                     '</w:r> ' +
                 '</w:p>';
