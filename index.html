@@ -14,21 +14,46 @@
     <script>
         function generate() {
             var doc = new DDoc();
-            doc.addList(['第一章', '第二章', '第三章']);
-            doc.addHeader("标题1", doc.HeaderType.H1);
-            doc.addList(['第1章', '第2章', '第3章']);
-            doc.addHeader("标题2", doc.HeaderType.H2);
-            doc.addHeader("标题3", doc.HeaderType.H3);
-            doc.addTable([
-                [1, 2, 3],
-                [4, 5, 6],
-                [7, 8, 9]
-            ]);
-            doc.addHeader("标题4", doc.HeaderType.H4);
-            doc.addEmptyTable(4, 5);
-            doc.newLine();
-            doc.addParagraph("测试生成文档!");
-            doc.generate();
+    doc.addParagraph("添加一个段落");
+    doc.addParagraph("添加一个段落，设置字体和大小",{
+        font:"Microsoft YaHei UI",
+        fontSize:"44"
+    });
+    doc.addParagraph("再添加一个段落，设置一些样式",{
+        font:"Microsoft YaHei UI",
+        fontSize:"44",
+        bold:true,
+        color:"FF0000",
+        highlightColor:"blue"
+    });
+
+    doc.addHeader("标题1", doc.HeaderType.H1);
+    doc.addHeader("标题2", doc.HeaderType.H2,{
+        font:"Microsoft YaHei UI",
+        color:"FF0000"
+    });
+
+    doc.addList(['第1章', '第2章', '第3章']);
+    doc.addList(['第一章', '第二章', '第三章'],{
+        color:"FF0000"
+    });
+
+    doc.addEmptyTable(4, 5);
+    doc.newLine();
+    doc.addTable([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ]);
+    doc.newLine();
+    doc.addTable([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ],{
+        color:"FF0000"
+    });
+    doc.generate();
         }
     </script>
     <!--[if lt IE 9]>
@@ -42,7 +67,7 @@
     <header>
       <div class="inner">
         <h1>DDoc</h1>
-        <h2>用 JS 生成 word 文档，可以插入段落、标题、表格、列表等。</h2>
+        <h2>用 JS 生成一份 word 文档，在文档中可以添加一些常规的元素并给这些元素设置一些常用的属性。</h2>
         <a href="https://github.com/DistChen/DDoc" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
@@ -80,20 +105,45 @@
 
 <pre><code>function generate() {
     var doc = new DDoc();
-    doc.addList(['第一章', '第二章', '第三章']);
+    doc.addParagraph("添加一个段落");
+    doc.addParagraph("添加一个段落，设置字体和大小",{
+        font:"Microsoft YaHei UI",
+        fontSize:"44"
+    });
+    doc.addParagraph("再添加一个段落，设置一些样式",{
+        font:"Microsoft YaHei UI",
+        fontSize:"44",
+        bold:true,
+        color:"FF0000",
+        highlightColor:"blue"
+    });
+
     doc.addHeader("标题1", doc.HeaderType.H1);
+    doc.addHeader("标题2", doc.HeaderType.H2,{
+        font:"Microsoft YaHei UI",
+        color:"FF0000"
+    });
+
     doc.addList(['第1章', '第2章', '第3章']);
-    doc.addHeader("标题2", doc.HeaderType.H2);
-    doc.addHeader("标题3", doc.HeaderType.H3);
+    doc.addList(['第一章', '第二章', '第三章'],{
+        color:"FF0000"
+    });
+
+    doc.addEmptyTable(4, 5);
+    doc.newLine();
     doc.addTable([
         [1, 2, 3],
         [4, 5, 6],
         [7, 8, 9]
     ]);
-    doc.addHeader("标题4", doc.HeaderType.H4);
-    doc.addEmptyTable(4, 5);
     doc.newLine();
-    doc.addParagraph("测试生成文档!");
+    doc.addTable([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ],{
+        color:"FF0000"
+    });
     doc.generate();
 }
 </code></pre>
