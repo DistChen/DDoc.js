@@ -1,6 +1,6 @@
 # DDoc
 [查看Demo](https://distchen.github.io/DDoc/)
-> DDoc 用 JS 生成一份 word 文档，在文档中可以添加一些常规的元素：段落、标题、列表、表格等。
+> DDoc 用 JS 生成一份 word 文档，在文档中可以添加一些常规的元素并给这些元素设置一些常用的属性。
 
 ## 使用方式
 
@@ -15,21 +15,46 @@
 
 ```
 function generate() {
-    var doc = new DDoc();
-    doc.addList(['第一章', '第二章', '第三章']);
+     var doc = new DDoc();
+    doc.addParagraph("添加一个段落");
+    doc.addParagraph("添加一个段落，设置字体和大小",{
+        font:"Microsoft YaHei UI",
+        fontSize:"44"
+    });
+    doc.addParagraph("再添加一个段落，设置一些样式",{
+        font:"Microsoft YaHei UI",
+        fontSize:"44",
+        bold:true,
+        color:"FF0000",
+        highlightColor:"blue"
+    });
+
     doc.addHeader("标题1", doc.HeaderType.H1);
+    doc.addHeader("标题2", doc.HeaderType.H2,{
+        font:"Microsoft YaHei UI",
+        color:"FF0000"
+    });
+
     doc.addList(['第1章', '第2章', '第3章']);
-    doc.addHeader("标题2", doc.HeaderType.H2);
-    doc.addHeader("标题3", doc.HeaderType.H3);
+    doc.addList(['第一章', '第二章', '第三章'],{
+        color:"FF0000"
+    });
+
+    doc.addEmptyTable(4, 5);
+    doc.newLine();
     doc.addTable([
         [1, 2, 3],
         [4, 5, 6],
         [7, 8, 9]
     ]);
-    doc.addHeader("标题4", doc.HeaderType.H4);
-    doc.addEmptyTable(4, 5);
     doc.newLine();
-    doc.addParagraph("测试生成文档!");
+    doc.addTable([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ],{
+        color:"FF0000"
+    });
     doc.generate();
 }
 ```
