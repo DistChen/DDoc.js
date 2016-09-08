@@ -35,18 +35,6 @@ DDoc.prototype._generateDocument = function () {
  *      }
  * @private
  */
-
-DDoc.prototype.UnderlineType={
-    Single:"single",
-    Double:"double",
-    Thick:"thick",
-    Dotted:"dotted",
-    Dash:"dash",
-    DotDash:"dotDash",
-    DotDotDash:"dotDotDash",
-    Wave:"wave"
-};
-
 DDoc.prototype._getStyle=function(paras){
     var style ='<w:rPr>';
     if(paras.font){
@@ -231,6 +219,17 @@ DDoc.prototype.HeaderType={
     H5:"5",
     H6:"6",
     H7:"7"
+};
+
+DDoc.prototype.UnderlineType={
+    Single:"single",
+    Double:"double",
+    Thick:"thick",
+    Dotted:"dotted",
+    Dash:"dash",
+    DotDash:"dotDash",
+    DotDotDash:"dotDotDash",
+    Wave:"wave"
 };
 
 DDoc.prototype.Templates = [
