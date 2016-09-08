@@ -16,7 +16,12 @@
         doc.addParagraph("添加一个段落");
         doc.addParagraph("添加一个段落，设置字体和大小",{
             font:"Microsoft YaHei UI",
-            fontSize:"44"
+            fontSize:"44",
+            italic:true,
+            underline:doc.UnderlineType.Wave,
+            underlineColor:"FF0000",
+            strike:true,
+            shadow:"FFFFFF"
         });
         doc.addParagraph("再添加一个段落，设置一些样式",{
             font:"Microsoft YaHei UI",
@@ -29,7 +34,9 @@
         doc.addHeader("标题1", doc.HeaderType.H1);
         doc.addHeader("标题2", doc.HeaderType.H2,{
             font:"Microsoft YaHei UI",
-            color:"FF0000"
+            underline:doc.UnderlineType.Double,
+            color:"67ff56",
+            underlineColor:"FF0000"
         });
 
         doc.addList(['第1章', '第2章', '第3章']);
