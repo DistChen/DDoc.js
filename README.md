@@ -15,7 +15,7 @@
 
 ```
 function generate() {
-     var doc = new DDoc();
+    var doc = new DDoc();
     doc.addParagraph("添加一个段落");
     doc.addParagraph("添加一个段落，设置字体和大小",{
         font:"Microsoft YaHei UI",
