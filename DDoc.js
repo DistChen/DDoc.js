@@ -140,7 +140,6 @@ DDoc.prototype.addTable=function(arrs,styles){
     var row = arrs.length;
     var col = arrs[0].length;
     var width = parseInt(8296/col);
-
     var table = '<w:tbl>' +
                     '<w:tblPr>' +
                         '<w:tblStyle w:val="a3"/>' +
@@ -150,27 +149,46 @@ DDoc.prototype.addTable=function(arrs,styles){
     for(var i=0;i<col;i++){
         table +='<w:gridCol w:w="'+width+'"/>';
     }
-    table+='</w:tblGrid>';
-
+    table +='</w:tblGrid>';
     for(var i=0;i<row;i++){
-        table +='<w:tr>';
-        for(var j=0;j<col;j++){
-            table +='<w:tc>' +
-                        '<w:tcPr>' +
-                            '<w:tcW w:w="'+width+'"/>' +
-                        '</w:tcPr>' +
-                        '<w:p>' +
-                            '<w:r>' + _style +
-                                '<w:t>'+arrs[i][j]+'</w:t>' +
-                            '</w:r>' +
-                        '</w:p>' +
-                    '</w:tc>';
-        }
-        table +='</w:tr>';
+        table += this._addRow(width,_style,arrs[i]);
     }
     table+='</w:tbl>';
     this.data.push(table);
 };
+
+
+DDoc.prototype._addRow=function(width,style,cols){
+    var row ='<w:tr>';
+    var gridSpanning = false;
+    var gridSpanCount = 1;
+    for(var i=0;i<cols.length;i++){
+        if(cols[i] === this.Merge.CC){
+            gridSpanCount++;
+            if(!gridSpanning){
+                gridSpanning = true;
+            }
+            continue;
+        }
+        row +=  '<w:tc>' +
+                    '<w:tcPr>' +
+                        '<w:tcW w:w="'+gridSpanCount*width+'"/>' +
+                        '<w:gridSpan w:val="'+gridSpanCount+'"/>' +
+                        (cols[i]===this.Merge.RC?'<w:vMerge/>':'<w:vMerge w:val="restart"/>')+
+                    '</w:tcPr>' +
+                    '<w:p>' +
+                        '<w:r>' + style +
+                            '<w:t>'+cols[i]+'</w:t>' +
+                        '</w:r>' +
+                    '</w:p>' +
+                '</w:tc>';
+        gridSpanning = false;
+        gridSpanCount = 1;
+    }
+    row +='</w:tr>';
+    return row;
+};
+
 
 /**
  * 添加列表
@@ -209,6 +227,12 @@ DDoc.prototype.generate = function () {
     }
     zip.add("word/document.xml", this._generateDocument());
     document.location.href = 'data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,' + zip.generate();
+};
+
+
+DDoc.prototype.Merge={
+    RC:{},//RowCell: 跨行合并的单元格，这些单元格都在同一列
+    CC:{}//ColumnCell:跨列合并的单元格，这些单元格在同一行
 };
 
 DDoc.prototype.HeaderType={
