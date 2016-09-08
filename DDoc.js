@@ -26,10 +26,27 @@ DDoc.prototype._generateDocument = function () {
  *          fontSize:"44",
  *          bold:true,
  *          color:"FF0000",
- *          highlightColor:"blue"
+ *          highlightColor:"blue",
+ *          italic:true,
+ *          underline:"single"
+ *          underlineColor:"FF0000",
+ *          strike:true,
+ *          shadow:"FFFFFF"
  *      }
  * @private
  */
+
+DDoc.prototype.UnderlineType={
+    Single:"single",
+    Double:"double",
+    Thick:"thick",
+    Dotted:"dotted",
+    Dash:"dash",
+    DotDash:"dotDash",
+    DotDotDash:"dotDotDash",
+    Wave:"wave"
+};
+
 DDoc.prototype._getStyle=function(paras){
     var style ='<w:rPr>';
     if(paras.font){
@@ -46,6 +63,22 @@ DDoc.prototype._getStyle=function(paras){
     }
     if(paras.highlightColor){
         style += '<w:highlight w:val="'+paras.highlightColor+'"/>';
+    }
+    if(paras.italic){
+        style += '<w:i/>';
+    }
+    if(paras.underline){
+        style += '<w:u w:val="'+paras.underline+'"';
+        if(paras.underlineColor){
+            style +=' w:color="'+paras.underlineColor+'"';
+        }
+        style +='/>';
+    }
+    if(paras.strike){
+        style +='<w:strike/>'
+    }
+    if(paras.shadow){
+        style += '<w:shd w:val="pct15" w:color="auto" w:fill="'+paras.shadow+'"/>';
     }
     style +='</w:rPr>';
     return style;
