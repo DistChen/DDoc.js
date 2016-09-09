@@ -8,6 +8,7 @@
 > - 表格
 > - 列表
 > - 图片
+
 ## 可设置的属性
 > - font：字体，比如："Microsoft YaHei UI"
 > - fontSize：字体大小，比如："44"
