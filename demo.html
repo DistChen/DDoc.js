@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>DDoc 测试页面</title>
+    <title>测试页面</title>
     <script type="text/javascript" src="jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="jszip.js"></script>
     <script type="text/javascript" src="DDoc.js"></script>
@@ -16,12 +16,13 @@
         doc.addParagraph("添加一个段落");
         doc.addParagraph("添加一个段落，设置字体和大小",{
             font:"Microsoft YaHei UI",
-            fontSize:"44",
             italic:true,
             underline:doc.UnderlineType.Wave,
             underlineColor:"FF0000",
             strike:true,
-            shadow:"FFFFFF"
+            shadow:"FFFFFF",
+            textAlign:doc.AlignType.Center,
+            lineHeight:3
         });
         doc.addParagraph("再添加一个段落，设置一些样式",{
             font:"Microsoft YaHei UI",
@@ -50,15 +51,22 @@
             [1, 2, 3],
             [4, 5, 6],
             [7, 8, 9]
-        ]);
+        ],{color:"FF0000"});
+
         doc.newLine();
         doc.addTable([
-            [1, 2, 3],
-            [4, 5, 6],
-            [7, 8, 9]
-        ],{
-            color:"FF0000"
+            [1, 2, 4,4,5],
+            [doc.Merge.CC,3, doc.Merge.RC,5,8],
+            [7, 8, 4,doc.Merge.CC,9],
+            [1, 2, doc.Merge.RC,doc.Merge.CC,5]
+        ]);
+
+
+        var _temp="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAAAmCAIAAADyTaq0AAAAAXNSR0IArs4c6QAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAWFJREFUWEftVgkOhCAMVB+0L9n/f4flUGQVcIptPQIhakwpnZm2MA6f7/C8YdaQw+foHtOtgRgzZGcMOoLyHzpg7FZts0p1Io+zM0pgWuW3yZOdBX9yyqRSHAkTgsPFUwIzS+9f/3Ba1Sms2+SYt8KVsbXoA6w/ZxBLhynlyeZ/CDj8REYOCQzGtRQAyWqDRMRvgytzbu+QcsJDBUx6GmSrnAmkBYM0kdbdVASJwU0zlkq0zemxX0g8NygUOtqWNKvIE/sM2Jqsma4gsRxVaobCMN12TQAMDFJWZ45IdO1B98DA0OnKryiRwuTfg4nFwOT0KjcejHa9SoFN0qy5BUvFRvbbXDN3VBMEs6/cQBu1zZ20P9AKBENW/JIFymAE7zOWPmUwsoJtwAifasUa4wH5NmXQixEPe5Je3qaMJFe6vrsyunzju3VlcK54LWPfLZxXXRlevvm8dWX4uOT19CplfqqGCgdY+hAkAAAAAElFTkSuQmCC";
+        doc.addImage(_temp,100,50,{
+            textAlign:doc.AlignType.Center
         });
+
         doc.generate();
     }
 </script>
