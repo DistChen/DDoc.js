@@ -8,61 +8,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-    <script type="text/javascript" src="javascripts/jquery-3.1.0.min.js"></script>
-    <script type="text/javascript" src="javascripts/jszip.js"></script>
-    <script type="text/javascript" src="javascripts/DDoc.js"></script>
-    <script>
-        function generate() {
-            var doc = new DDoc();
-    doc.addParagraph("添加一个段落");
-    doc.addParagraph("添加一个段落，设置字体和大小",{
-        font:"Microsoft YaHei UI",
-        fontSize:"44",
-        italic:true,
-        underline:doc.UnderlineType.Wave,
-        underlineColor:"FF0000",
-        strike:true,
-        shadow:"FFFFFF"
-    });
-    doc.addParagraph("再添加一个段落，设置一些样式",{
-        font:"Microsoft YaHei UI",
-        fontSize:"44",
-        bold:true,
-        color:"FF0000",
-        highlightColor:"blue"
-    });
 
-    doc.addHeader("标题1", doc.HeaderType.H1);
-    doc.addHeader("标题2", doc.HeaderType.H2,{
-        font:"Microsoft YaHei UI",
-        underline:doc.UnderlineType.Double,
-        color:"67ff56",
-        underlineColor:"FF0000"
-    });
-
-    doc.addList(['第1章', '第2章', '第3章']);
-    doc.addList(['第一章', '第二章', '第三章'],{
-        color:"FF0000"
-    });
-
-    doc.addEmptyTable(4, 5);
-    doc.newLine();
-    doc.addTable([
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9]
-    ]);
-    doc.newLine();
-    doc.addTable([
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9]
-    ],{
-        color:"FF0000"
-    });
-    doc.generate();
-        }
-    </script>
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -74,7 +20,7 @@
     <header>
       <div class="inner">
         <h1>DDoc</h1>
-        <h2>用JS生成word文档</h2>
+        <h2>用 JS 生成 word 文档，可以插入段落、标题、表格、列表等。</h2>
         <a href="https://github.com/DistChen/DDoc" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
@@ -82,45 +28,167 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <p style="
-    text-align: center;
-"><a href="javascript:generate()" style="
-    padding: 10px 20px;
-    font-size: 20px;
-    color: white;
-    background: #2e7bcf url(../images/header-bg.jpg) 0 0 repeat-x;
-">点此生成文档</a></p>
-          <blockquote style="
-    margin: 0px;
-    font-size: 16px;
-    padding-left: 10px;
-">
-<p>用 JS 生成一份 word 文档，在文档中可以添加一些常规的元素并给这些元素设置一些常用的属性。</p>
+          <h1>
+<a id="ddocjs" class="anchor" href="#ddocjs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>DDoc.js</h1>
+
+<p><a href="https://distchen.github.io/DDoc/">查看Demo</a></p>
+
+<p>使用 DDoc.js，你可以生成一份 word 文档，在此文档中可以添加多种元素并设置多种属性。</p>
+
+<h2>
+<a id="可添加的元素" class="anchor" href="#%E5%8F%AF%E6%B7%BB%E5%8A%A0%E7%9A%84%E5%85%83%E7%B4%A0" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>可添加的元素</h2>
+
+<blockquote>
+<ul>
+<li>段落</li>
+<li>标题</li>
+<li>表格</li>
+<li>列表</li>
+<li>图片
+## 可设置的属性</li>
+<li>font：字体，比如："Microsoft YaHei UI"</li>
+<li>fontSize：字体大小，比如："44"</li>
+<li>bold:true：是否加粗，true 或 false，默认不加粗</li>
+<li>color：颜色，比如："FF0000"</li>
+<li>highlightColor：高亮颜色，比如："blue"</li>
+<li>italic：是否斜体，true 或 false，默认非斜体</li>
+<li>underline: 下划线类型，比如：doc.UnderlineType.Wave(波浪线)，默认无下划线</li>
+<li>underlineColor：下划线颜色，比如："FF0000"</li>
+<li>strike：文本删除线，true 或 false</li>
+<li>shadow：文本底纹颜色，比如："FFFFFF"，默认无</li>
+<li>textAlign: 文本对齐方式，比如：doc.AlignType.Center，默认两端对齐</li>
+<li>lineHeight：行间距，比如：3</li>
+</ul>
 </blockquote>
 
 <h2>
 <a id="使用方式" class="anchor" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用方式</h2>
 
-<p>引用如下脚本文件:</p>
+<h3>
+<a id="引用脚本文件" class="anchor" href="#%E5%BC%95%E7%94%A8%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>引用脚本文件</h3>
 
 <pre><code>&lt;script type="text/javascript" src="jquery-3.1.0.min.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript" src="jszip.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript" src="DDoc.js"&gt;&lt;/script&gt;
 </code></pre>
 
-<p>生成一份文档：</p>
+<h3>
+<a id="构造-ddoc-实例" class="anchor" href="#%E6%9E%84%E9%80%A0-ddoc-%E5%AE%9E%E4%BE%8B" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>构造 DDoc 实例</h3>
+
+<pre><code>var doc = new DDoc();
+</code></pre>
+
+<h3>
+<a id="添加段落" class="anchor" href="#%E6%B7%BB%E5%8A%A0%E6%AE%B5%E8%90%BD" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>添加段落</h3>
+
+<pre><code>doc.addParagraph("添加一个段落");
+</code></pre>
+
+<h3>
+<a id="添加段落并设置样式" class="anchor" href="#%E6%B7%BB%E5%8A%A0%E6%AE%B5%E8%90%BD%E5%B9%B6%E8%AE%BE%E7%BD%AE%E6%A0%B7%E5%BC%8F" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>添加段落并设置样式</h3>
+
+<pre><code>doc.addParagraph("添加一个段落，设置字体和大小",{
+    font:"Microsoft YaHei UI",
+    italic:true,
+    underline:doc.UnderlineType.Wave,
+    underlineColor:"FF0000",
+    strike:true,
+    shadow:"FFFFFF",
+    textAlign:doc.AlignType.Center,
+    lineHeight:3
+});
+</code></pre>
+
+<h3>
+<a id="添加标题" class="anchor" href="#%E6%B7%BB%E5%8A%A0%E6%A0%87%E9%A2%98" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>添加标题</h3>
+
+<pre><code>doc.addHeader("标题1", doc.HeaderType.H1);//H2....H7
+</code></pre>
+
+<h3>
+<a id="添加标题并设置样式" class="anchor" href="#%E6%B7%BB%E5%8A%A0%E6%A0%87%E9%A2%98%E5%B9%B6%E8%AE%BE%E7%BD%AE%E6%A0%B7%E5%BC%8F" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>添加标题并设置样式</h3>
+
+<pre><code>doc.addHeader("标题2", doc.HeaderType.H2,{
+    font:"Microsoft YaHei UI",
+    underline:doc.UnderlineType.Double,
+    color:"67ff56",
+    underlineColor:"FF0000"
+});
+</code></pre>
+
+<h3>
+<a id="添加45的空表格" class="anchor" href="#%E6%B7%BB%E5%8A%A045%E7%9A%84%E7%A9%BA%E8%A1%A8%E6%A0%BC" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>添加4*5的空表格</h3>
+
+<pre><code>doc.addEmptyTable(4, 5);
+</code></pre>
+
+<h3>
+<a id="添加33表格有数据并设置颜色为红色" class="anchor" href="#%E6%B7%BB%E5%8A%A033%E8%A1%A8%E6%A0%BC%E6%9C%89%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%AE%BE%E7%BD%AE%E9%A2%9C%E8%89%B2%E4%B8%BA%E7%BA%A2%E8%89%B2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>添加3*3表格(有数据)并设置颜色为红色</h3>
+
+<pre><code>doc.addTable([
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+],{color:"FF0000"});
+</code></pre>
+
+<h3>
+<a id="添加表格行列分别有合并" class="anchor" href="#%E6%B7%BB%E5%8A%A0%E8%A1%A8%E6%A0%BC%E8%A1%8C%E5%88%97%E5%88%86%E5%88%AB%E6%9C%89%E5%90%88%E5%B9%B6" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>添加表格(行列分别有合并)</h3>
+
+<pre><code>//doc.Merge.CC 代表此单元格跨列合并
+//doc.Merge.RC 代表此单元格跨行合并
+doc.addTable([
+    [1, 2, 4,4,5],
+    [doc.Merge.CC,3, doc.Merge.RC,5,8],
+    [7, 8, 4,doc.Merge.CC,9],
+    [1, 2, doc.Merge.RC,doc.Merge.CC,5]
+]);
+</code></pre>
+
+<h3>
+<a id="添加图片" class="anchor" href="#%E6%B7%BB%E5%8A%A0%E5%9B%BE%E7%89%87" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>添加图片</h3>
+
+<pre><code>var _temp="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAAAmCAIAAADyTaq0AAAAAXNSR0IArs4c6QAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAWFJREFUWEftVgkOhCAMVB+0L9n/f4flUGQVcIptPQIhakwpnZm2MA6f7/C8YdaQw+foHtOtgRgzZGcMOoLyHzpg7FZts0p1Io+zM0pgWuW3yZOdBX9yyqRSHAkTgsPFUwIzS+9f/3Ba1Sms2+SYt8KVsbXoA6w/ZxBLhynlyeZ/CDj8REYOCQzGtRQAyWqDRMRvgytzbu+QcsJDBUx6GmSrnAmkBYM0kdbdVASJwU0zlkq0zemxX0g8NygUOtqWNKvIE/sM2Jqsma4gsRxVaobCMN12TQAMDFJWZ45IdO1B98DA0OnKryiRwuTfg4nFwOT0KjcejHa9SoFN0qy5BUvFRvbbXDN3VBMEs6/cQBu1zZ20P9AKBENW/JIFymAE7zOWPmUwsoJtwAifasUa4wH5NmXQixEPe5Je3qaMJFe6vrsyunzju3VlcK54LWPfLZxXXRlevvm8dWX4uOT19CplfqqGCgdY+hAkAAAAAElFTkSuQmCC";
+doc.addImage(_temp,100,50,{
+    textAlign:doc.AlignType.Center
+});
+</code></pre>
+
+<h3>
+<a id="添加列表" class="anchor" href="#%E6%B7%BB%E5%8A%A0%E5%88%97%E8%A1%A8" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>添加列表</h3>
+
+<pre><code>doc.addList(['第一章', '第二章', '第三章'],{
+    color:"FF0000"
+});
+</code></pre>
+
+<h3>
+<a id="添加空行" class="anchor" href="#%E6%B7%BB%E5%8A%A0%E7%A9%BA%E8%A1%8C" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>添加空行</h3>
+
+<pre><code>doc.newLine();
+</code></pre>
+
+<h3>
+<a id="生成word文档" class="anchor" href="#%E7%94%9F%E6%88%90word%E6%96%87%E6%A1%A3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>生成word文档</h3>
+
+<pre><code>doc.generate();
+</code></pre>
+
+<h2>
+<a id="生成一份文档的示例代码" class="anchor" href="#%E7%94%9F%E6%88%90%E4%B8%80%E4%BB%BD%E6%96%87%E6%A1%A3%E7%9A%84%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>生成一份文档的示例代码：</h2>
 
 <pre><code>function generate() {
     var doc = new DDoc();
     doc.addParagraph("添加一个段落");
     doc.addParagraph("添加一个段落，设置字体和大小",{
         font:"Microsoft YaHei UI",
-        fontSize:"44",
         italic:true,
         underline:doc.UnderlineType.Wave,
         underlineColor:"FF0000",
         strike:true,
-        shadow:"FFFFFF"
+        shadow:"FFFFFF",
+        textAlign:doc.AlignType.Center,
+        lineHeight:3
     });
     doc.addParagraph("再添加一个段落，设置一些样式",{
         font:"Microsoft YaHei UI",
@@ -149,15 +217,21 @@
         [1, 2, 3],
         [4, 5, 6],
         [7, 8, 9]
-    ]);
+    ],{color:"FF0000"});
+
     doc.newLine();
     doc.addTable([
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9]
-    ],{
-        color:"FF0000"
+        [1, 2, 4,4,5],
+        [doc.Merge.CC,3, doc.Merge.RC,5,8],
+        [7, 8, 4,doc.Merge.CC,9],
+        [1, 2, doc.Merge.RC,doc.Merge.CC,5]
+    ]);
+
+    var _temp="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAAAmCAIAAADyTaq0AAAAAXNSR0IArs4c6QAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAWFJREFUWEftVgkOhCAMVB+0L9n/f4flUGQVcIptPQIhakwpnZm2MA6f7/C8YdaQw+foHtOtgRgzZGcMOoLyHzpg7FZts0p1Io+zM0pgWuW3yZOdBX9yyqRSHAkTgsPFUwIzS+9f/3Ba1Sms2+SYt8KVsbXoA6w/ZxBLhynlyeZ/CDj8REYOCQzGtRQAyWqDRMRvgytzbu+QcsJDBUx6GmSrnAmkBYM0kdbdVASJwU0zlkq0zemxX0g8NygUOtqWNKvIE/sM2Jqsma4gsRxVaobCMN12TQAMDFJWZ45IdO1B98DA0OnKryiRwuTfg4nFwOT0KjcejHa9SoFN0qy5BUvFRvbbXDN3VBMEs6/cQBu1zZ20P9AKBENW/JIFymAE7zOWPmUwsoJtwAifasUa4wH5NmXQixEPe5Je3qaMJFe6vrsyunzju3VlcK54LWPfLZxXXRlevvm8dWX4uOT19CplfqqGCgdY+hAkAAAAAElFTkSuQmCC";
+    doc.addImage(_temp,100,50,{
+        textAlign:doc.AlignType.Center
     });
+
     doc.generate();
 }
 </code></pre>
@@ -165,7 +239,8 @@
 <pre><code>&lt;a href="javascript:generate()"&gt;生成文档&lt;/a&gt;
 </code></pre>
 
-<p>生成的word文档及内容如下：</p>
+<h2>
+<a id="生成的word文档及内容如下" class="anchor" href="#%E7%94%9F%E6%88%90%E7%9A%84word%E6%96%87%E6%A1%A3%E5%8F%8A%E5%86%85%E5%AE%B9%E5%A6%82%E4%B8%8B" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>生成的word文档及内容如下：</h2>
 
 <p><img src="https://raw.githubusercontent.com/DistChen/DDoc/master/demo.png" alt="image"></p>
         </section>
