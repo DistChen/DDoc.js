@@ -31,14 +31,16 @@ DDoc.prototype._generateDocument = function () {
  *          color:"FF0000",
  *          highlightColor:"blue",
  *          italic:true,
- *          underline:"single"
+ *          underline:DDoc.prototype.UnderlineType.Single
  *          underlineColor:"FF0000",
  *          strike:true,
- *          shadow:"FFFFFF"
+ *          shadow:"FFFFFF",
+ *          textAlign:DDoc.prototype.AlignType.Center
+ *          lineHeight:3
  *      }
  * @private
  */
-DDoc.prototype._getStyle=function(paras){
+DDoc.prototype._getRPrStyle=function(paras){
     var style ='<w:rPr>';
     if(paras.font){
         style +='<w:rFonts w:ascii="'+paras.font+'" w:eastAsia="'+paras.font+'" w:hAnsi="'+paras.font+'"/>';
@@ -75,20 +77,32 @@ DDoc.prototype._getStyle=function(paras){
     return style;
 };
 
+
+DDoc.prototype._getPPrStyle= function(paras){
+    var style = '<w:pPr>';
+    if(paras.textAlign){
+        style += '<w:jc w:val="'+paras.textAlign+'"/>'
+    }
+    if(paras.lineHeight){
+        style += '<w:spacing w:line="'+paras.lineHeight*240+'" w:lineRule="auto"/>';
+    }
+    style +='</w:pPr>';
+    return style;
+};
+
 /**
  * 添加段落
  * @param text 被添加的文本
  * @param styles 样式
  */
 DDoc.prototype.addParagraph = function (text,styles) {
-    var p ='<w:p>' +
-                '<w:r>' + this._getStyle(styles||{})+
+    var p ='<w:p>' + this._getPPrStyle(styles||{})+
+                '<w:r>' + this._getRPrStyle(styles||{})+
                     '<w:t>'+text+'</w:t>' +
                 '</w:r>' +
             '</w:p>';
     this.data.push(p);
 };
-
 
 /**
  * 添加新行
@@ -104,11 +118,11 @@ DDoc.prototype.newLine=function(){
  * @param styles 样式
  */
 DDoc.prototype.addHeader=function(text,type,styles){
-    var h='<w:p>' +
+    var h='<w:p>'+ this._getPPrStyle(styles||{})+
             '<w:pPr>' +
                 '<w:pStyle w:val="'+type+'"/>' +
             '</w:pPr>' +
-            '<w:r>' + this._getStyle(styles||{})+
+            '<w:r>' + this._getRPrStyle(styles||{})+
                 '<w:t>'+text+'</w:t>' +
             '</w:r>' +
           '</w:p>';
@@ -139,7 +153,7 @@ DDoc.prototype.addEmptyTable=function(row,col,styles){
  * @param styles 样式
  */
 DDoc.prototype.addTable=function(arrs,styles){
-    var _style = this._getStyle(styles||{});
+    var _style = this._getRPrStyle(styles||{});
     var row = arrs.length;
     var col = arrs[0].length;
     var width = parseInt(8296/col);
@@ -160,7 +174,14 @@ DDoc.prototype.addTable=function(arrs,styles){
     this.data.push(table);
 };
 
-
+/**
+ * 添加表格行
+ * @param width 行中每个单元格的宽度
+ * @param style
+ * @param cols
+ * @returns {string}
+ * @private
+ */
 DDoc.prototype._addRow=function(width,style,cols){
     var row ='<w:tr>';
     var gridSpanning = false;
@@ -192,14 +213,13 @@ DDoc.prototype._addRow=function(width,style,cols){
     return row;
 };
 
-
 /**
  * 添加列表
  * @param items
  * @param styles 样式
  */
 DDoc.prototype.addList=function(items,styles){
-    var _style = this._getStyle(styles||{});
+    var _style = this._getRPrStyle(styles||{});
     this.listCount++;
     var list='';
     for(var i in items){
@@ -227,12 +247,13 @@ DDoc.prototype.addList=function(items,styles){
  * @param height
  * @param style
  */
-DDoc.prototype.addImage=function(data,width,height,style){
+DDoc.prototype.addImage=function(data,width,height,styles){
     this.imgIndex++;
     var imageName = "media/image"+this.imgIndex+"."+data.substring(11,data.indexOf(";"));
     this.imageRelationData.push('<Relationship Id="rId'+this.imgIndex+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="'+imageName+'"/>');
     this.zip.add("word/"+imageName,data.substring(data.indexOf(",")+1),{base64: true});
-    var p = '<w:p>' +
+
+    var p = '<w:p>' + this._getPPrStyle(styles||{})+
                 '<w:r>' +
                     '<w:drawing>' +
                         '<wp:inline>' +
@@ -288,6 +309,14 @@ DDoc.prototype.generate = function () {
     }
     this.zip.add("word/document.xml", this._generateDocument());
     document.location.href = 'data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,' + this.zip.generate();
+};
+
+
+DDoc.prototype.AlignType={
+    Left:"left",
+    Center:"center",
+    Right:"right",
+    Distribute:"distribute" //分散对齐
 };
 
 
