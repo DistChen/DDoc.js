@@ -1,5 +1,5 @@
 # DDoc.js
-[查看Demo](https://distchen.github.io/DDoc/)
+[查看Demo](https://distchen.github.io/DDoc.js/)
 
 使用 DDoc.js，你可以生成一份 word 文档，在此文档中可以添加多种元素并设置多种属性。
 ## 可添加的元素
