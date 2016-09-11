@@ -67,7 +67,11 @@
         doc.addImage(_temp,100,50,{
             textAlign:doc.AlignType.Center
         });
-
+        
+        doc.addHyperlink("Github地址","https://github.com/DistChen/DDoc.js",{
+            fontSize:"30",
+            bold:true
+        });
         doc.generate();
     }
 </script>
@@ -109,6 +113,7 @@
     margin: 0px;">
 <ul>
 <li>段落</li>
+<li>超链接</li>
 <li>标题</li>
 <li>表格</li>
 <li>列表</li>
