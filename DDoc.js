@@ -1,8 +1,8 @@
 function DDoc() {
     this.data = [];
-    this.imageRelationData = [];
+    this.relationData = [];
     this.listCount = 0;
-    this.imgIndex = 10;
+    this.counter = 10;
     this.zip = new JSZip("STORE");
 }
 
@@ -248,9 +248,9 @@ DDoc.prototype.addList=function(items,styles){
  * @param style
  */
 DDoc.prototype.addImage=function(data,width,height,styles){
-    this.imgIndex++;
-    var imageName = "media/image"+this.imgIndex+"."+data.substring(11,data.indexOf(";"));
-    this.imageRelationData.push('<Relationship Id="rId'+this.imgIndex+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="'+imageName+'"/>');
+    this.counter++;
+    var imageName = "media/image"+this.counter+"."+data.substring(11,data.indexOf(";"));
+    this.relationData.push('<Relationship Id="rId'+this.counter+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="'+imageName+'"/>');
     this.zip.add("word/"+imageName,data.substring(data.indexOf(",")+1),{base64: true});
 
     var p = '<w:p>' + this._getPPrStyle(styles||{})+
@@ -267,7 +267,7 @@ DDoc.prototype.addImage=function(data,width,height,styles){
                                             '<pic:cNvPicPr/> ' +
                                         '</pic:nvPicPr> ' +
                                         '<pic:blipFill> ' +
-                                            '<a:blip r:embed="rId'+this.imgIndex+'"/> ' +
+                                            '<a:blip r:embed="rId'+this.counter+'"/> ' +
                                             '<a:stretch> ' +
                                                 '<a:fillRect/> ' +
                                             '</a:stretch> ' +
@@ -292,13 +292,35 @@ DDoc.prototype.addImage=function(data,width,height,styles){
 };
 
 /**
+ * 添加超链接
+ * @param displayName 显示名称
+ * @param url
+ * @param style
+ */
+DDoc.prototype.addHyperlink=function(displayName,url,style){
+    this.counter++;
+    this.relationData.push('<Relationship Id="rId'+this.counter+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" Target="'+url+'" TargetMode="External"/>');
+    var p ='<w:p> ' +
+            '<w:hyperlink r:id="rId'+this.counter+'"> ' +
+                '<w:r> ' + this._getRPrStyle(style)+
+                    '<w:rPr> ' +
+                        '<w:rStyle w:val="a3"/> ' +
+                    '</w:rPr> ' +
+                   '<w:t>'+displayName+'</w:t>' +
+                   '</w:r> ' +
+                '</w:hyperlink> ' +
+            '</w:p>';
+    this.data.push(p);
+};
+
+/**
  * 生成文档并下载
  */
 DDoc.prototype.generate = function () {
     for (var i in this.Templates) {
         if(this.Templates[i].name == "word/_rels/document.xml.rels"){
             var temp = this.Templates[i].value.substring(0,this.Templates[i].value.length - 16);
-            this.imageRelationData.forEach(function(item){
+            this.relationData.forEach(function(item){
                 temp += item;
             });
             temp += '</Relationships>';
