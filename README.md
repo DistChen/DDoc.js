@@ -4,6 +4,7 @@
 使用 DDoc.js，你可以生成一份 word 文档，在此文档中可以添加多种元素并设置多种属性。
 ## 可添加的元素
 > - 段落
+> - 超链接
 > - 标题
 > - 表格
 > - 列表
@@ -52,6 +53,17 @@ doc.addParagraph("添加一个段落，设置字体和大小",{
     shadow:"FFFFFF",
     textAlign:doc.AlignType.Center,
     lineHeight:3
+});
+```
+### 添加超链接
+```
+doc.addHyperlink("Github地址","https://github.com/DistChen/DDoc.js");
+```
+### 添加超链接并设置样式
+```
+doc.addHyperlink("Github地址","https://github.com/DistChen/DDoc.js",{
+    fontSize:"30",
+    bold:true
 });
 ```
 ### 添加标题
@@ -175,6 +187,11 @@ function generate() {
     var _temp="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAAAmCAIAAADyTaq0AAAAAXNSR0IArs4c6QAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAWFJREFUWEftVgkOhCAMVB+0L9n/f4flUGQVcIptPQIhakwpnZm2MA6f7/C8YdaQw+foHtOtgRgzZGcMOoLyHzpg7FZts0p1Io+zM0pgWuW3yZOdBX9yyqRSHAkTgsPFUwIzS+9f/3Ba1Sms2+SYt8KVsbXoA6w/ZxBLhynlyeZ/CDj8REYOCQzGtRQAyWqDRMRvgytzbu+QcsJDBUx6GmSrnAmkBYM0kdbdVASJwU0zlkq0zemxX0g8NygUOtqWNKvIE/sM2Jqsma4gsRxVaobCMN12TQAMDFJWZ45IdO1B98DA0OnKryiRwuTfg4nFwOT0KjcejHa9SoFN0qy5BUvFRvbbXDN3VBMEs6/cQBu1zZ20P9AKBENW/JIFymAE7zOWPmUwsoJtwAifasUa4wH5NmXQixEPe5Je3qaMJFe6vrsyunzju3VlcK54LWPfLZxXXRlevvm8dWX4uOT19CplfqqGCgdY+hAkAAAAAElFTkSuQmCC";
     doc.addImage(_temp,100,50,{
         textAlign:doc.AlignType.Center
+    });
+
+    doc.addHyperlink("Github地址","https://github.com/DistChen/DDoc.js",{
+        fontSize:"30",
+        bold:true
     });
 
     doc.generate();
