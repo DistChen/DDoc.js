@@ -315,8 +315,9 @@ DDoc.prototype.addHyperlink=function(displayName,url,style){
 
 /**
  * 生成文档并下载
+ * @param fileName 下载文件名称，可选
  */
-DDoc.prototype.generate = function () {
+DDoc.prototype.generate = function (fileName) {
     for (var i in this.Templates) {
         if(this.Templates[i].name == "word/_rels/document.xml.rels"){
             var temp = this.Templates[i].value.substring(0,this.Templates[i].value.length - 16);
@@ -330,7 +331,14 @@ DDoc.prototype.generate = function () {
         }
     }
     this.zip.add("word/document.xml", this._generateDocument());
-    document.location.href = 'data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,' + this.zip.generate();
+    if(fileName && fileName.trim().length > 0){
+        var link = document.createElement('a');    
+        link.href = 'data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,' + this.zip.generate();
+        link.download = fileName;
+        link.click();
+    }else{
+        document.location.href = 'data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,' + this.zip.generate();
+    }
 };
 
 

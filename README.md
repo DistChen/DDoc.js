@@ -194,7 +194,9 @@ function generate() {
         bold:true
     });
 
-    doc.generate();
+    doc.generate("demo.docx");
+    // or
+    // doc.generate();
 }
 ```
 
